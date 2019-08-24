@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Linq;
 
-namespace THBAlbums
+namespace THBAlbums.Utils
 {
     public static class ExtMethod
     {
@@ -77,7 +77,19 @@ namespace THBAlbums
             var index = 0;
             foreach (var v in obj.Keys)
             {
-                str += string.Format("{0}={1}{2}", v,obj[v.ToStr()], (index < obj.Count - 1) ? split : "");
+                str += string.Format("{0}={1}{2}", v, obj[v.ToStr()], (index < obj.Count - 1) ? split : "");
+                index++;
+            }
+            return str;
+        }
+
+        public static string ToString(this JArray obj, string split)
+        {
+            var str = "";
+            var index = 0;
+            foreach (var v in obj)
+            {
+                str += string.Format("{0}{1}", v, (index < obj.Count - 1) ? split : "");
                 index++;
             }
             return str;
@@ -95,7 +107,7 @@ namespace THBAlbums
             return str;
         }
 
-        public static string ToStr(this object obj)
+        public static string ToStr(this object obj, string def = "")
         {
             try
             {
@@ -103,7 +115,7 @@ namespace THBAlbums
             }
             catch
             {
-                return "";
+                return def;
             }
         }
         /// <summary>
@@ -221,6 +233,59 @@ namespace THBAlbums
         #endregion
 
         #region Json对象扩展
+
+        /// <summary>
+        /// 对当前JObject对象进行转换成目标对象
+        /// </summary>
+        /// <typeparam name="T">目标类型</typeparam>
+        /// <param name="obj">JObject对象</param>
+        /// <param name="newobj">目标对象</param>
+        /// <param name="filtter">过滤属性</param>
+        /// <returns></returns>
+        public static T ParseTo<T>(this JObject obj, T newobj, string[] filtter = null)
+        {
+            foreach (var p in obj)
+            {
+                var name = p.Key;
+                var value = p.Value;
+                var np = newobj.GetType().GetProperty(name);
+                if (np != null)
+                {
+                    var PropertyType = np.PropertyType;
+                    if (filtter == null || filtter.SingleOrDefault(f => f.Contains(name)) == null)
+                    {
+                        np.SetValue(newobj, Convert.ChangeType(value, np.PropertyType));
+                    }
+                }
+            }
+            return newobj;
+        }
+
+        /// <summary>
+        /// 将JObject对象进行转换成当前类型对象
+        /// </summary>
+        /// <typeparam name="T">转换类型</typeparam>
+        /// <param name="obj">JObject对象</param>
+        /// <param name="newobj">当前对象</param>
+        /// <param name="filtter">过滤属性</param>
+        public static void ParseFrom<T>(this T newobj,JObject obj,string[] filtter=null)
+        {
+            foreach (var p in obj)
+            {
+                var name = p.Key;
+                var value = p.Value;
+                var np = newobj.GetType().GetProperty(name);
+                if (np != null)
+                {
+                    var PropertyType = np.PropertyType;
+                    if (filtter == null || filtter.SingleOrDefault(f => f.Contains(name)) == null)
+                    {
+                        np.SetValue(newobj, Convert.ChangeType(value, np.PropertyType));
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// 判断是否缺少指定Key
         /// </summary>
@@ -245,7 +310,7 @@ namespace THBAlbums
         /// <param name="fkey"></param>
         /// <param name="misskey">缺失的key</param>
         /// <returns></returns>
-        public static bool IsNull(this JObject json, string[] fkey,ref string misskey)
+        public static bool IsNull(this JObject json, string[] fkey, ref string misskey)
         {
             foreach (var key in fkey)
             {
@@ -266,7 +331,7 @@ namespace THBAlbums
         public static JObject ToJObject(this object obj)
         {
             string t;
-            if (obj is string)
+            if (obj is string||obj is JObject||obj is JToken)
             {
                 t = obj.ToString();
             }
