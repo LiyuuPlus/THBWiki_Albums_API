@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29201.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THBAlbums", "THBAlbums\THBAlbums.csproj", "{665EE1B0-069C-4381-A8E8-D538CCB8AEFC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{665EE1B0-069C-4381-A8E8-D538CCB8AEFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{665EE1B0-069C-4381-A8E8-D538CCB8AEFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{665EE1B0-069C-4381-A8E8-D538CCB8AEFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{665EE1B0-069C-4381-A8E8-D538CCB8AEFC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B5BA80C-2D79-479F-B8E9-9CA6095F08FB}
+	EndGlobalSection
+EndGlobal
