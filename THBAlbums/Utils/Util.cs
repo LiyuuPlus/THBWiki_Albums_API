@@ -44,14 +44,16 @@ namespace THBAlbums.Utils
             wc.QueryString = Query;
             try
             {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var res = wc.DownloadData(reqUrl);
                 result = DeUnicode(encoding.GetString(res));
+                return result;
             }
-            catch
+            catch(Exception ex)
             {
-                return "";
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                return null;
             }
-            return result;
         }
 
         /// <summary>
@@ -80,6 +82,7 @@ namespace THBAlbums.Utils
             }
             else
             {
+                Req = new NameValueCollection();
                 wc.Headers["Accpet"] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
                 //wc.Headers["UserAgent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36";
                 wc.Headers["UserAgent"] = Req["UserAgent"] ?? "Mozilla/5.0 (Windows NT 10.0; Win64; x64) THBAlbumsAPI/1.0";
@@ -87,12 +90,14 @@ namespace THBAlbums.Utils
             wc.QueryString = Query;
             try
             {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var res = await wc.DownloadDataTaskAsync(reqUrl);
                 result = DeUnicode(encoding.GetString(res));
             }
-            catch
+            catch(Exception ex)
             {
-                return "";
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                return null;
             }
             return result;
         }

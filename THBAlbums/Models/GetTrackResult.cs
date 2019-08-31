@@ -27,51 +27,61 @@ namespace THBAlbums.Models
         /// <summary>
         /// 曲目名称
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 制作社团
         /// </summary>
-        public string circle { get; set; }
+        public string Circle { get; set; }
 
         /// <summary>
         /// 曲目碟号
         /// </summary>
-        public int discno { get; set; }
+        public int DiscNo { get; set; }
 
         /// <summary>
         /// 曲目音轨号
         /// </summary>
-        public int trackno { get; set; }
+        public int TrackNo { get; set; }
 
         /// <summary>
         /// 艺术家
         /// </summary>
-        public string artist { get; set; }
+        public string Artist { get; set; }
 
         /// <summary>
         /// 曲目原曲列表
         /// </summary>
-        public string ogmusic { get; set; }
+        public string OGMusic { get; set; }
 
         /// <summary>
         /// 曲目来源
         /// </summary>
-        public string ogwork { get; set; }
+        public string OGWork { get; set; }
 
         /// <summary>
-        /// 歌词地址
+        /// 歌词地址（原文）
         /// </summary>
-        public string lrc { get; set; }
+        public string Lrc { get; set; }
+
+        /// <summary>
+        /// 歌词地址（译文）
+        /// </summary>
+        public string TranLrc { get; set; }
+
+        /// <summary>
+        /// 歌词地址（双语对照）
+        /// </summary>
+        public string AllLrc { get; set; }
 
         /// <summary>
         /// 曲目类型
         /// </summary>
-        public string type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// 曲目时长（秒）
         /// </summary>
-        public int time { get; set; }
+        public int Time { get; set; }
     }
 }

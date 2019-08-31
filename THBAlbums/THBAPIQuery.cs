@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using THBAlbums.Models;
 using THBAlbums.Utils;
 
@@ -85,9 +86,11 @@ namespace THBAlbums
         /// <returns></returns>
         public GetAlbumResult GetAlbum(string AlbumName = "", string ID = "")
         {
-            var gar = new GetAlbumResult();
-            gar.ErrorCode = QueryError.NO_ERROR;
-            gar.tracks = new List<GetTrackResult>();
+            var gar = new GetAlbumResult
+            {
+                ErrorCode = QueryError.NO_ERROR,
+                Tracks = new List<GetTrackResult>()
+            };
             if (string.IsNullOrWhiteSpace(AlbumName) && string.IsNullOrWhiteSpace(ID))
             {
                 gar.ErrorCode = QueryError.NO_KEY;
@@ -112,7 +115,7 @@ namespace THBAlbums
             {
                 var result = json["result"].ToString().ToJArray();
                 var album = result[0].ToJObject();
-                gar.ParseFrom(album);
+                gar.ParseFrom(album, IgnoreCase: true);
                 var tracks = result[1].ToJObject();
                 foreach (var item in tracks)
                 {
@@ -122,8 +125,68 @@ namespace THBAlbums
                     {
                         SMWID = item.Key.ToInt()
                     };
-                    gtr.ParseFrom(jo);
-                    gar.tracks.Add(gtr);
+                    gtr.ParseFrom(jo, IgnoreCase: true);
+                    gar.Tracks.Add(gtr);
+                }
+            }
+            return gar;
+        }
+
+        /// <summary>
+        /// 异步获取专辑（名称、ID二选一）
+        /// </summary>
+        /// <param name="AlbumName">专辑名称</param>
+        /// <param name="ID">专辑SMWID</param>
+        /// <returns></returns>
+        public async Task<GetAlbumResult> GetAlbumAsync(string AlbumName = "", string ID = "")
+        {
+            var gar = new GetAlbumResult
+            {
+                ErrorCode = QueryError.NO_ERROR,
+                Tracks = new List<GetTrackResult>()
+            };
+            if (string.IsNullOrWhiteSpace(AlbumName) && string.IsNullOrWhiteSpace(ID))
+            {
+                gar.ErrorCode = QueryError.NO_KEY;
+                gar.ErrorMsg = "未填写必要参数";
+                return gar;
+            }
+            SetFormat(THBApiDef.ALBUMS_PROPERTYS);
+            SetProperty(THBApiDef.TRACKS_PROPERTYS);
+            SetMode(THBApiDef.GET_ALBUM);
+            SetSplit("，");
+            if (!string.IsNullOrWhiteSpace(ID))
+            {
+                SetAlbumID(ID);
+            }
+            else
+            {
+                SetAlbumTitle(AlbumName);
+            }
+            var res = await APIRequestAsync();
+            var json = res.ToJObject();
+            if ((bool)json["status"])
+            {
+                var result = json["result"].ToString().ToJArray();
+                var album = result[0].ToJObject();
+                gar.ParseFrom(album, IgnoreCase: true);
+                var tracks = result[1].ToJObject();
+                foreach (var item in tracks)
+                {
+                    var value = item.Value;
+                    var jo = value.ToJObject();
+                    var gtr = new GetTrackResult
+                    {
+                        SMWID = item.Key.ToInt()
+                    };
+                    gtr.ParseFrom(jo, IgnoreCase: true);
+                    if (gtr.Name.LastIndexOf(".1") == gtr.Name.Length - 2)
+                    {
+                        gtr.Lrc = gtr.Lrc.Replace(".1.lrc", ".1.1.lrc");
+                    }
+                    gtr.TranLrc = gtr.Lrc.Replace(".lrc", ".t.lrc");
+                    gtr.AllLrc = gtr.Lrc.Replace(".lrc", ".all.lrc");
+                    gar.Tracks.Add(gtr);
                 }
             }
             return gar;
@@ -136,6 +199,7 @@ namespace THBAlbums
         public void GetTrack(string ID)
         {
             SetMode(THBApiDef.GET_TRACK);
+            SetProperty(THBApiDef.TRACKS_PROPERTYS);
         }
     }
 }

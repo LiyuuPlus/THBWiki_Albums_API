@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Reflection;
 
 namespace THBAlbums.Utils
 {
@@ -265,20 +266,22 @@ namespace THBAlbums.Utils
         /// 将JObject对象进行转换成当前类型对象
         /// </summary>
         /// <typeparam name="T">转换类型</typeparam>
-        /// <param name="obj">JObject对象</param>
+        /// <param name="jobj">JObject对象</param>
         /// <param name="newobj">当前对象</param>
         /// <param name="filtter">过滤属性</param>
-        public static void ParseFrom<T>(this T newobj,JObject obj,string[] filtter=null)
+        /// <param name="IgnoreCase">忽略键值大小写（可能存在同键覆盖）</param>
+        public static void ParseFrom<T>(this T newobj, JObject jobj, string[] filtter = null, bool IgnoreCase = false)
         {
-            foreach (var p in obj)
+            foreach (var p in jobj)
             {
                 var name = p.Key;
                 var value = p.Value;
-                var np = newobj.GetType().GetProperty(name);
+                var newobjtype = newobj.GetType();
+                var np = IgnoreCase ? newobjtype.GetProperties().FirstOrDefault(f=>f.Name.ToLower().Contains(name.ToLower())) : newobjtype.GetProperty(name);
                 if (np != null)
                 {
                     var PropertyType = np.PropertyType;
-                    if (filtter == null || filtter.SingleOrDefault(f => f.Contains(name)) == null)
+                    if (filtter == null || (IgnoreCase ? filtter.SingleOrDefault(f => f.ToLower().Contains(name.ToLower())) : filtter.SingleOrDefault(f => f.Contains(name))) == null)
                     {
                         np.SetValue(newobj, Convert.ChangeType(value, np.PropertyType));
                     }
@@ -331,7 +334,7 @@ namespace THBAlbums.Utils
         public static JObject ToJObject(this object obj)
         {
             string t;
-            if (obj is string||obj is JObject||obj is JToken)
+            if (obj is string || obj is JObject || obj is JToken)
             {
                 t = obj.ToString();
             }

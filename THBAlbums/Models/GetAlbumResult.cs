@@ -22,52 +22,52 @@ namespace THBAlbums.Models
         /// <summary>
         /// 专辑名称
         /// </summary>
-        public string alname { get; set; }
+        public string AlName { get; set; }
 
         /// <summary>
         /// 制作社团
         /// </summary>
-        public string circle { get; set; }
+        public string Circle { get; set; }
 
         /// <summary>
         /// 发售时间
         /// </summary>
-        public string date { get; set; }
+        public string Date { get; set; }
 
         /// <summary>
         /// 发售年份
         /// </summary>
-        public string year { get; set; }
+        public string Year { get; set; }
 
         /// <summary>
         /// 展会
         /// </summary>
-        public string @event { get; set; }
+        public string Event { get; set; }
 
         /// <summary>
         /// 展会词条
         /// </summary>
-        public string eventpage { get; set; }
+        public string EventPage { get; set; }
 
         /// <summary>
         /// 分级
         /// </summary>
-        public string rate { get; set; }
+        public string Rate { get; set; }
 
         /// <summary>
         /// 专辑编号
         /// </summary>
-        public string number { get; set; }
+        public string Number { get; set; }
 
         /// <summary>
         /// 专辑碟数
         /// </summary>
-        public int disc { get; set; }
+        public int Disc { get; set; }
 
         /// <summary>
         /// 专辑音轨数
         /// </summary>
-        public int track { get; set; }
+        public int Track { get; set; }
 
         /// <summary>
         /// 专辑总时长（秒）
@@ -77,56 +77,56 @@ namespace THBAlbums.Models
         /// <summary>
         /// 专辑类型
         /// </summary>
-        public string @property { get; set; }
+        public string Property { get; set; }
 
         /// <summary>
         /// 专辑风格
         /// </summary>
-        public string style { get; set; }
+        public string Style { get; set; }
 
         /// <summary>
         /// 专辑特定选材
         /// </summary>
-        public string only { get; set; }
+        public string Only { get; set; }
 
         /// <summary>
         /// 发售价格
         /// </summary>
-        public string price { get; set; }
+        public string Price { get; set; }
 
         /// <summary>
         /// 会场售价
         /// </summary>
-        public string eventprice { get; set; }
+        public string EventPrice { get; set; }
 
         /// <summary>
         /// 通贩售价
         /// </summary>
-        public string shopprice { get; set; }
+        public string ShopPrice { get; set; }
 
         /// <summary>
         /// 备注
         /// </summary>
-        public string note { get; set; }
+        public string Note { get; set; }
 
         /// <summary>
         /// 官网页面
         /// </summary>
-        public string official { get; set; }
+        public string Official { get; set; }
 
         /// <summary>
         /// 封面图片链接
         /// </summary>
-        public string coverurl { get; set; }
+        public string CoverUrl { get; set; }
 
         /// <summary>
         /// 封面角色
         /// </summary>
-        public string coverchar { get; set; }
+        public string CoverChar { get; set; }
 
         /// <summary>
         /// 曲目列表
         /// </summary>
-        public List<GetTrackResult> tracks { get; set; }
+        public List<GetTrackResult> Tracks { get; set; }
     }
 }
